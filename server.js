@@ -1,20 +1,29 @@
-// File: server.js
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const courseRoutes = require('./routes/courseRoutes');
 const chapterRoutes = require('./routes/chapterRoutes');
-const authRoute= require('./routes/auth')
+const authRoute = require('./routes/auth');
 
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow any origin
+app.use(cors({
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
   .then(() => console.log('MongoDB connected'))
   .catch((error) => console.error('MongoDB connection error:', error));
 
